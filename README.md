@@ -28,3 +28,8 @@ File MP3 di `public/samples/` dibuat oleh `npm run samples`. Skrip ini mengunduh
 [CDM Gamelan Sample Library](https://github.com/Digitopia/CDM-GAMELAN-SAMPLE-LIBRARY)
 (Digitopia – Casa da Música, Artistic License 2.0) ke `assets-src/`, lalu mengubahnya jadi MP3 mono 96 kbps
 yang sudah dipangkas dan dinormalkan (total ±4,9 MB; yang dimuat saat halaman dibuka ±2 MB).
+
+## Deploy
+
+Aplikasi tayang di https://nadantara.vercel.app. Setiap push ke branch `main` otomatis di-deploy oleh Vercel;
+branch lain mendapat preview URL sendiri.
