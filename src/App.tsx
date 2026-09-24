@@ -209,6 +209,13 @@ export default function App() {
         </div>
         <dl className="colophon-meta">
           <div>
+            <dt>Pengembang</dt>
+            <dd>
+              <a href="https://semesta.sch.id" target="_blank" rel="noreferrer">Semesta Bilingual Boarding School</a>
+              <span className="muted"> · Semarang</span>
+            </dd>
+          </div>
+          <div>
             <dt>Sampel suara</dt>
             <dd>
               <a href="https://digitopia.casadamusica.com/CDM-GAMELAN-SAMPLE-LIBRARY/" target="_blank" rel="noreferrer">

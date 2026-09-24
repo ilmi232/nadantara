@@ -1,6 +1,7 @@
 # Nadantara
 
 Platform instrumen musik digital untuk membantu guru mengajar musik, dimulai dari gamelan Jawa.
+Dikembangkan oleh [Semesta Bilingual Boarding School](https://semesta.sch.id), Semarang.
 
 ## Prototipe saat ini
 
