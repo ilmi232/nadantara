@@ -13,6 +13,11 @@ Dikembangkan oleh [Semesta Bilingual Boarding School](https://semesta.sch.id), S
   lancaran (kethuk di ketukan ganjil, kenong 4/8/12/16, kempul 6/10/14, gong 16), pola sederhana untuk
   bonang (*gembyang*) dan kendang (*tak–dhung–tak–dha*), serta tombol untuk menyalakan/mematikan tiap instrumen
 
+- **Mode Proyektor**: layar penuh untuk kelas dengan notasi besar, lampu instrumen yang menyala per ketukan
+  (ketuk lampu untuk mematikan instrumen), putar sebagian gatra, tema terang/gelap, dan layar tidak tertidur.
+  Kendali: `Spasi` putar/berhenti, `←` `→` atau `PageUp`/`PageDown` (clicker presentasi) pindah gatra,
+  `+` `−` tempo, `Home` putar semua, `Esc` keluar
+
 Keyboard: `A`–`J` = bilah saron, `Q`–`U` / `Z`–`M` = pencon bonang atas / bawah, `K` / `L` / `O` = kendang
 dha / dhung / tak, `1`–`7` = nada saron, `Spasi` = gong ageng.
 

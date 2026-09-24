@@ -286,7 +286,15 @@ h3 .muted { font-weight: 400; font-size: 0.85rem; }
 
 .notation > p { grid-column: 1 / -1; }
 .notation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 16px; background: #fbf4e8; border: 1px dashed var(--line); border-radius: 12px; margin-bottom: 8px; }
-.gatra { display: flex; justify-content: space-around; gap: 2px; padding: 4px 8px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); }
+.gatra {
+  display: flex; justify-content: space-around; gap: 2px; padding: 4px 8px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--line); color: inherit; font: inherit; cursor: pointer;
+  transition: opacity 120ms, border-color 120ms;
+}
+.gatra:hover { border-color: var(--gold); }
+.gatra:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.gatra.selected { border: 2px solid var(--accent); padding: 3px 7px; }
+.notation.has-range .gatra:not(.selected) { opacity: 0.45; }
 .beat { position: relative; display: grid; justify-items: center; width: 2.1em; padding: 2px 0 4px; border-radius: 8px; font-size: clamp(1.3rem, 3vw, 1.7rem); transition: background 80ms; }
 .beat-mark { font-size: 0.45em; font-weight: 700; color: var(--accent); height: 1.1em; }
 .beat.has-gong .kepatihan::after { content: ''; position: absolute; left: 50%; top: 58%; width: 1.35em; height: 1.35em; transform: translate(-50%, -50%); border: 2px solid var(--accent); border-radius: 50%; }
@@ -294,6 +302,71 @@ h3 .muted { font-weight: 400; font-size: 0.85rem; }
 .beat.invalid { color: var(--warn); text-decoration: line-through; }
 .legend { font-size: 0.82rem; margin-bottom: 16px; }
 .legend-gong { color: var(--accent); font-weight: 700; }
+.link { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.player-actions { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.btn-projector { padding: 10px 16px; }
+
+/* ---------- Mode Proyektor ---------- */
+.projector {
+  --pj-bg: #f7f0e3; --pj-surface: #fffaf1; --pj-ink: #22160d; --pj-muted: #7a6554; --pj-line: #e3d3bb;
+  --pj-now: #f2b632; --pj-now-ink: #22160d; --pj-accent: #a8431f; --pj-lamp: #efe3d1;
+  position: fixed; inset: 0; z-index: 50; outline: none;
+  display: grid; grid-template-rows: auto 1fr auto; gap: 1.6vh;
+  padding: 2vh 2.5vw; background: var(--pj-bg); color: var(--pj-ink);
+}
+.projector-gelap {
+  --pj-bg: #150e09; --pj-surface: #241810; --pj-ink: #f6e8cf; --pj-muted: #b49c80; --pj-line: #3b2a1d;
+  --pj-now: #f2b632; --pj-now-ink: #150e09; --pj-accent: #f08a5d; --pj-lamp: #2e2016;
+}
+.pj-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
+.pj-title { display: grid; gap: 2px; min-width: 0; }
+.pj-name { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(1.3rem, 2.4vw, 2.2rem); line-height: 1.1; }
+.pj-sub { color: var(--pj-muted); font-size: clamp(0.85rem, 1.2vw, 1.1rem); }
+.pj-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pj-controls button { font: inherit; cursor: pointer; }
+.pj-controls button:focus-visible, .lamp:focus-visible { outline: 3px solid var(--pj-now); outline-offset: 2px; }
+.pj-play {
+  border: 0; border-radius: 12px; padding: 12px 22px; min-width: 9.5em;
+  background: var(--pj-accent); color: #fff7ee; font-weight: 700; font-size: clamp(1rem, 1.4vw, 1.3rem);
+}
+.pj-play.is-playing { background: var(--pj-ink); color: var(--pj-bg); }
+.pj-tempo { display: flex; align-items: center; border: 1.5px solid var(--pj-line); border-radius: 12px; overflow: hidden; }
+.pj-tempo button { border: 0; background: var(--pj-surface); color: var(--pj-ink); width: 2.4em; height: 2.6em; font-size: 1.1rem; font-weight: 700; }
+.pj-tempo span { padding: 0 12px; font-size: 0.9rem; color: var(--pj-muted); white-space: nowrap; }
+.pj-tempo b { color: var(--pj-ink); font-size: 1.2rem; }
+.pj-btn { border: 1.5px solid var(--pj-line); background: transparent; color: var(--pj-ink); border-radius: 12px; padding: 10px 14px; font-weight: 600; font-size: 0.9rem; }
+.pj-exit { border-color: var(--pj-ink); }
+
+.pj-stage { min-height: 0; overflow: hidden auto; display: grid; align-content: center; padding: 4px; }
+.notation-projector {
+  grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2vw; margin: 0; padding: 0;
+  background: none; border: 0;
+}
+.notation-projector .gatra { background: var(--pj-surface); border-color: var(--pj-line); padding: 1.2vh 0.6vw; border-radius: 14px; }
+.notation-projector .gatra.selected { border: 3px solid var(--pj-accent); padding: calc(1.2vh - 2px) calc(0.6vw - 2px); }
+.notation-projector .gatra.playing { border-color: var(--pj-now); }
+.notation-projector .beat { width: auto; flex: 1; font-size: clamp(1.8rem, min(5.2vw, 9vh), 7rem); border-radius: 12px; padding: 0.05em 0 0.12em; }
+.notation-projector .beat-mark { color: var(--pj-accent); }
+.notation-projector .beat.has-gong .kepatihan::after { width: 1.15em; height: 1.15em; border-color: var(--pj-accent); border-width: 0.06em; }
+.notation-projector .beat.now { background: var(--pj-now); color: var(--pj-now-ink); box-shadow: none; }
+.notation-projector .beat.now .beat-mark { color: var(--pj-now-ink); }
+
+.pj-foot { display: grid; gap: 1vh; }
+.pj-lamps { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.8vw; }
+.lamp {
+  display: grid; justify-items: center; gap: 2px; padding: 1vh 4px; border-radius: 12px;
+  border: 1.5px solid var(--pj-line); background: var(--pj-lamp); color: var(--pj-muted); font: inherit; cursor: pointer;
+  transition: background 90ms, color 90ms, border-color 90ms;
+}
+.lamp-name { font-size: clamp(0.72rem, 1vw, 0.95rem); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.lamp-value { min-height: 1.3em; font-size: clamp(1.1rem, 2.4vw, 2.2rem); font-weight: 700; line-height: 1.2; }
+.lamp.lit { background: var(--pj-now); border-color: var(--pj-now); color: var(--pj-now-ink); }
+.lamp.lit .lamp-value { animation: lamp-pop 220ms ease-out; }
+@keyframes lamp-pop { from { transform: scale(0.8); } }
+.lamp.muted { opacity: 0.4; }
+.lamp.muted .lamp-name { text-decoration: line-through; }
+.pj-hint { text-align: center; font-size: clamp(0.72rem, 0.95vw, 0.9rem); color: var(--pj-muted); }
+.pj-hint .link { color: var(--pj-accent); }
 
 .controls { display: flex; align-items: flex-end; gap: 16px 24px; flex-wrap: wrap; margin-top: 16px; }
 .field-inline { min-width: 0; }
@@ -347,6 +420,10 @@ h3 .muted { font-weight: 400; font-size: 0.85rem; }
   .rancakan-kenong { gap: 4px; padding: 10px 8px; }
   .pencon-key { display: none; }
   .kendang-set { grid-template-columns: 1fr; }
+  .notation-projector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .notation-projector .beat { font-size: clamp(1.6rem, 9vw, 3rem); }
+  .pj-lamps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pj-hint { display: none; }
   .stroke-skin { width: 56px; height: 56px; }
   .rancakan-bonang { padding: 12px 8px; }
   .pencon-row-label { font-size: 0.62rem; }
@@ -358,5 +435,5 @@ h3 .muted { font-weight: 400; font-size: 0.85rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gong-body.swing, .gong-ripple, .brand-mark.is-ringing, .brand-mark.is-ringing::after, .pencon-body.bob, .pencon-ripple, .stroke-skin.thump { animation: none; }
+  .gong-body.swing, .gong-ripple, .brand-mark.is-ringing, .brand-mark.is-ringing::after, .pencon-body.bob, .pencon-ripple, .stroke-skin.thump, .lamp.lit .lamp-value { animation: none; }
 }

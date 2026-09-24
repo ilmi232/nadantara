@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   BILAH, BONANG, BONANG_KEYS, BONANG_PENCON, GONG, KEMPUL, KENDANG, KENONG, KEYS, LARAS, SARON,
   bonangSample, kempulSample, kendangSample, kenongSample, kethukSample, saronSample,
@@ -12,6 +12,8 @@ import { Bonang } from './components/Bonang';
 import { Kendang } from './components/Kendang';
 import { UpdateToast } from './components/UpdateToast';
 import { usePwa } from './pwa';
+import { usePlayer } from './player';
+import { Projector } from './components/Projector';
 import { BalunganPlayer } from './components/BalunganPlayer';
 
 export default function App() {
@@ -25,6 +27,10 @@ export default function App() {
   const soundKey = `${laras}-${kind}-${bonang}`;
   const status = loaded?.key !== soundKey ? 'loading' : loaded.ok ? 'ready' : 'error';
   const pwa = usePwa();
+  const player = usePlayer({ laras, kind, bonang, damp });
+  const [projector, setProjector] = useState(false);
+  // stabil: Projector keluar dari layar penuh kalau callback ini berubah
+  const closeProjector = useCallback(() => setProjector(false), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,6 +55,8 @@ export default function App() {
   // K / L / O = kendang dha / dhung / tak, angka = nada saron, spasi = gong
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // di Mode Proyektor tombol keyboard dipakai untuk kendali pemutar
+      if (projector) return;
       if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
       const t = e.target as HTMLElement;
       if (t.closest('textarea, select, input:not([type=checkbox]):not([type=range])')) return;
@@ -81,7 +89,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [laras, kind, bonang, damp]);
+  }, [laras, kind, bonang, damp, projector]);
 
   return (
     <div className="app">
@@ -199,7 +207,7 @@ export default function App() {
           <Kendang showKeys={showKeys} />
         </section>
 
-        <BalunganPlayer laras={laras} kind={kind} bonang={bonang} damp={damp} onLaras={setLaras} />
+        <BalunganPlayer player={player} laras={laras} onLaras={setLaras} onProjector={() => setProjector(true)} />
       </main>
 
       <footer className="colophon">
@@ -233,6 +241,7 @@ export default function App() {
         </dl>
       </footer>
 
+      {projector && <Projector player={player} laras={laras} kind={kind} onClose={closeProjector} />}
       {pwa.needRefresh && <UpdateToast onRefresh={pwa.refresh} onDismiss={pwa.dismissRefresh} />}
     </div>
   );
