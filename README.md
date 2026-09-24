@@ -15,6 +15,14 @@ Platform instrumen musik digital untuk membantu guru mengajar musik, dimulai dar
 Keyboard: `A`–`J` = bilah saron, `Q`–`U` / `Z`–`M` = pencon bonang atas / bawah, `K` / `L` / `O` = kendang
 dha / dhung / tak, `1`–`7` = nada saron, `Spasi` = gong ageng.
 
+## Mode offline (PWA)
+
+Pada kunjungan pertama, service worker menyimpan seluruh aplikasi, font, dan semua sampel suara (±5,4 MB).
+Setelah itu Nadantara tetap bisa dibuka dan dimainkan tanpa internet, dan bisa dipasang ke layar utama HP/laptop.
+Versi baru tidak dipasang otomatis: muncul pemberitahuan "Muat ulang" supaya pelajaran tidak terputus.
+
+Ikon dibuat dari `public/favicon.svg` dengan `npm run icons`.
+
 ## Menjalankan
 
 ```bash

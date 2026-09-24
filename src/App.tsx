@@ -10,6 +10,8 @@ import { Saron } from './components/Saron';
 import { Gongs } from './components/Gongs';
 import { Bonang } from './components/Bonang';
 import { Kendang } from './components/Kendang';
+import { UpdateToast } from './components/UpdateToast';
+import { usePwa } from './pwa';
 import { BalunganPlayer } from './components/BalunganPlayer';
 
 export default function App() {
@@ -22,6 +24,7 @@ export default function App() {
   const [loaded, setLoaded] = useState<{ key: string; ok: boolean } | null>(null);
   const soundKey = `${laras}-${kind}-${bonang}`;
   const status = loaded?.key !== soundKey ? 'loading' : loaded.ok ? 'ready' : 'error';
+  const pwa = usePwa();
 
   useEffect(() => {
     let cancelled = false;
@@ -82,17 +85,37 @@ export default function App() {
 
   return (
     <div className="app">
+      {!pwa.online && (
+        <p className="strip">
+          <b>Tanpa internet.</b>{' '}
+          {pwa.savedOffline ? 'Semua suara sudah tersimpan, Nadantara tetap bisa dimainkan.' : 'Suara yang belum tersimpan mungkin tidak berbunyi.'}
+        </p>
+      )}
+      {status === 'error' && (
+        <p className="strip strip-error">
+          <b>Sebagian suara gagal dimuat.</b> Periksa koneksi, lalu muat ulang halaman.
+        </p>
+      )}
+
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark" aria-hidden>◉</span>
+          {/* logo gong ikut bergetar selama suara dimuat */}
+          <span className={`brand-mark ${status === 'loading' ? 'is-ringing' : ''}`} aria-hidden>
+            <span className="brand-pencu" />
+          </span>
           <div>
             <h1>Nadantara</h1>
             <p>Gamelan digital untuk belajar di kelas</p>
           </div>
         </div>
-        <span className={`status status-${status}`}>
-          {status === 'loading' ? 'Memuat suara…' : status === 'ready' ? 'Siap dimainkan' : 'Gagal memuat suara'}
+        <span className="sr-only" role="status">
+          {status === 'loading' ? 'Memuat suara' : status === 'ready' ? 'Suara siap dimainkan' : ''}
         </span>
+        {pwa.install && (
+          <button type="button" className="btn-install" onClick={pwa.install}>
+            Pasang di perangkat ini
+          </button>
+        )}
       </header>
 
       <main>
@@ -179,9 +202,31 @@ export default function App() {
         <BalunganPlayer laras={laras} kind={kind} bonang={bonang} damp={damp} onLaras={setLaras} />
       </main>
 
-      <footer className="credits">
-        Prototipe Nadantara · Sampel suara: <a href="https://digitopia.casadamusica.com/CDM-GAMELAN-SAMPLE-LIBRARY/" target="_blank" rel="noreferrer">Virtual Gamelan, Digitopia – Casa da Música</a> (Artistic License 2.0)
+      <footer className="colophon">
+        <div className="colophon-brand">
+          <span className="colophon-name">Nadantara</span>
+          <span className="muted">Prototipe · alat bantu pembelajaran karawitan</span>
+        </div>
+        <dl className="colophon-meta">
+          <div>
+            <dt>Sampel suara</dt>
+            <dd>
+              <a href="https://digitopia.casadamusica.com/CDM-GAMELAN-SAMPLE-LIBRARY/" target="_blank" rel="noreferrer">
+                Digitopia, Casa da Música
+              </a>
+              <span className="muted"> · Artistic License 2.0</span>
+            </dd>
+          </div>
+          {pwa.offlineSupported && (
+            <div>
+              <dt>Offline</dt>
+              <dd>{pwa.savedOffline ? 'Tersimpan di perangkat ini' : 'Sedang disimpan…'}</dd>
+            </div>
+          )}
+        </dl>
       </footer>
+
+      {pwa.needRefresh && <UpdateToast onRefresh={pwa.refresh} onDismiss={pwa.dismissRefresh} />}
     </div>
   );
 }
