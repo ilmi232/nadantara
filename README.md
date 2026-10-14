@@ -21,6 +21,16 @@ Dikembangkan oleh [Semesta Bilingual Boarding School](https://semesta.sch.id), S
 Keyboard: `A`–`J` = bilah saron, `Q`–`U` / `Z`–`M` = pencon bonang atas / bawah, `K` / `L` / `O` = kendang
 dha / dhung / tak, `1`–`7` = nada saron, `Spasi` = gong ageng.
 
+## Menambah gending
+
+1. Guru mengisi [`content/gending-isian.xlsx`](content/gending-isian.xlsx): satu gending per baris, dengan
+   pilihan bentuk/laras/pathet dan pemeriksaan otomatis (jumlah ketukan, nada 4/7 di sléndro, panjang lancaran).
+2. Simpan file yang sudah diisi di `content/gending-isian.xlsx`, lalu jalankan `npm run gending`.
+   Gending yang benar ditulis ke `src/data/gending.json`; baris yang bermasalah dilewati dan dilaporkan.
+3. Commit dan push. Gending muncul di menu "Gending & latihan".
+
+Template kosong dibuat ulang dengan `npm run template` (butuh Python + openpyxl).
+
 ## Mode offline (PWA)
 
 Pada kunjungan pertama, service worker menyimpan seluruh aplikasi, font, dan semua sampel suara (±5,4 MB).

@@ -33,7 +33,8 @@ const TICK_MS = 25;
 
 export function usePlayer({ laras, kind, bonang, damp }: { laras: Laras; kind: SaronKind; bonang: BonangKind; damp: boolean }) {
   const [text, setTextRaw] = useState(PRESETS[1].text);
-  const [title, setTitle] = useState(PRESETS[1].name);
+  // gending/latihan yang sedang dimuat; null = notasi ketikan sendiri
+  const [preset, setPreset] = useState<Preset | null>(PRESETS[1]);
   const [structure, setStructure] = useState<Structure>(PRESETS[1].structure);
   const [tempo, setTempoRaw] = useState(72);
   const [loop, setLoop] = useState(true);
@@ -172,14 +173,15 @@ export function usePlayer({ laras, kind, bonang, damp }: { laras: Laras; kind: S
     text,
     setText: (t: string) => {
       setTextRaw(t);
-      setTitle('Notasi sendiri');
+      setPreset(null);
     },
     loadPreset: (p: Preset) => {
       setTextRaw(p.text);
-      setTitle(p.name);
+      setPreset(p);
       setStructure(p.structure);
     },
-    title,
+    preset,
+    title: preset?.name ?? 'Notasi sendiri',
     structure, setStructure,
     tempo,
     setTempo: (t: number) => setTempoRaw(Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, Math.round(t)))),

@@ -183,7 +183,9 @@ export default function App() {
           </header>
           <Bonang kind={bonang} laras={laras} showKeys={showKeys} />
           <p className="muted note">
-            Susunan pencon disederhanakan: nada naik dari kiri ke kanan. Pada bonang asli, urutan pencon di rancakan tidak selalu seperti ini.
+            {laras === 'pelog'
+              ? 'Susunan pencon pélog mengikuti rancakan bonang asli: atas 4 6 5 3 2 1 7, bawah 7 1 2 3 5 6 4.'
+              : 'Susunan pencon sléndro masih disederhanakan: nada naik dari kiri ke kanan.'}
           </p>
         </section>
 

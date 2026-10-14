@@ -53,11 +53,12 @@ export interface Pencon {
 const row = (nums: string[], octave: 0 | 1): Pencon[] =>
   nums.map((n) => ({ id: octave ? `${n}h` : n, num: n, octave }));
 
-// Susunan disederhanakan: baris bawah = oktaf rendah, baris atas = oktaf tinggi,
-// nada naik dari kiri ke kanan (susunan asli di rancakan bonang berbeda-beda).
+// Baris atas = oktaf tinggi, baris bawah = oktaf rendah, urut kiri ke kanan seperti
+// di rancakan. Pélog mengikuti susunan bonang asli; sléndro masih disederhanakan
+// (nada naik dari kiri ke kanan).
 export const BONANG_PENCON: Record<Laras, { high: Pencon[]; low: Pencon[] }> = {
   slendro: { high: row(['1', '2', '3', '5', '6'], 1), low: row(['1', '2', '3', '5', '6'], 0) },
-  pelog: { high: row(['1', '2', '3', '4', '5', '6', '7'], 1), low: row(['1', '2', '3', '4', '5', '6', '7'], 0) },
+  pelog: { high: row(['4', '6', '5', '3', '2', '1', '7'], 1), low: row(['7', '1', '2', '3', '5', '6', '4'], 0) },
 };
 
 export const KENONG: Record<Laras, Pencon[]> = {
@@ -239,6 +240,14 @@ export interface Preset {
   laras: Laras;
   structure: Structure;
   text: string;
+  // hanya pada gending dari file isian guru (scripts/import-gending.mjs)
+  bentuk?: string;
+  pathet?: string;
+  jenjang?: string;
+  buka?: string;
+  sumber?: string;
+  catatan?: string;
+  oleh?: string;
 }
 
 export const PRESETS: Preset[] = [

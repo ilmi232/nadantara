@@ -128,7 +128,8 @@ export function Projector({ player, laras, kind, onClose }: Props) {
         <div className="pj-title">
           <span className="pj-name">{title}</span>
           <span className="pj-sub">
-            Laras {LARAS[laras].label} · {structure === 'lancaran' ? 'Lancaran' : 'Bentuk bebas'} · {SARON[kind].label}
+            Laras {LARAS[laras].label}{player.preset?.pathet ? ` pathet ${player.preset.pathet.toLowerCase()}` : ''} ·{' '}
+            {player.preset?.bentuk ?? (structure === 'lancaran' ? 'Lancaran' : 'Bentuk bebas')} · {SARON[kind].label}
           </span>
         </div>
         <div className="pj-controls">

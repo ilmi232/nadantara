@@ -1,5 +1,6 @@
 import { LARAS, PRESETS, type Laras, type Structure } from '../gamelan';
 import { LAYERS, TEMPO_MAX, TEMPO_MIN, type Player } from '../player';
+import { GENDING } from '../gending';
 import { Notation } from './Notation';
 
 interface Props {
@@ -22,20 +23,32 @@ export function BalunganPlayer({ player, laras, onLaras, onProjector }: Props) {
         </div>
         <div className="player-actions">
           <label className="field">
-            <span>Contoh latihan</span>
+            <span>{GENDING.length ? 'Gending & latihan' : 'Contoh latihan'}</span>
             <select
               value=""
               onChange={(e) => {
-                const p = PRESETS[Number(e.target.value)];
+                const [kind, i] = e.target.value.split(':');
+                const p = (kind === 'g' ? GENDING : PRESETS)[Number(i)];
                 if (!p) return;
                 player.loadPreset(p);
                 onLaras(p.laras);
               }}
             >
               <option value="" disabled>Pilih…</option>
-              {PRESETS.map((p, i) => (
-                <option key={p.name} value={i}>{p.name}</option>
-              ))}
+              {GENDING.length > 0 && (
+                <optgroup label="Gending">
+                  {GENDING.map((p, i) => (
+                    <option key={`g${i}`} value={`g:${i}`}>
+                      {p.name} ({p.laras === 'slendro' ? 'sl.' : 'pl.'}{p.pathet ? ` ${p.pathet.toLowerCase()}` : ''})
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              <optgroup label="Latihan">
+                {PRESETS.map((p, i) => (
+                  <option key={p.name} value={`l:${i}`}>{p.name}</option>
+                ))}
+              </optgroup>
             </select>
           </label>
           <button type="button" className="btn-install btn-projector" onClick={onProjector}>
